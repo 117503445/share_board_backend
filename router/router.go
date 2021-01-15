@@ -5,6 +5,7 @@ import (
 	"github.com/gin-gonic/gin"
 	"gopkg.in/olahol/melody.v1"
 	"math"
+	"net/http"
 	"shareboard/api"
 	"shareboard/middleware"
 )
@@ -14,9 +15,10 @@ func NewRouter() *gin.Engine {
 	r := gin.Default()
 
 	m := melody.New()
+	m.Upgrader.CheckOrigin = func(r *http.Request) bool { return true }
 	m.Config.MaxMessageSize = math.MaxInt64
 
-	r.Use(middleware.Cors())
+	//r.Use(middleware.Cors())
 
 	// 路由
 	v1 := r.Group("/api/v1")

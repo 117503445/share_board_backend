@@ -7,6 +7,7 @@ import (
 	"math"
 	"net/http"
 	"shareboard/api"
+	"shareboard/global"
 	"shareboard/middleware"
 )
 
@@ -14,11 +15,11 @@ import (
 func NewRouter() *gin.Engine {
 	r := gin.Default()
 
-	m := melody.New()
-	m.Upgrader.CheckOrigin = func(r *http.Request) bool { return true }
-	m.Config.MaxMessageSize = math.MaxInt64
+	global.M = melody.New()
+	global.M.Upgrader.CheckOrigin = func(r *http.Request) bool { return true }
+	global.M.Config.MaxMessageSize = math.MaxInt64
 
-	//r.Use(middleware.Cors())
+	r.Use(middleware.Cors())
 
 	// 路由
 	v1 := r.Group("/api/v1")
@@ -53,18 +54,16 @@ func NewRouter() *gin.Engine {
 			}
 		}
 
+		v1.GET("/board/:id", api.BoardGetData)
+
 		v1.GET("/ws", func(c *gin.Context) {
-			err := m.HandleRequest(c.Writer, c.Request)
+			err := global.M.HandleRequest(c.Writer, c.Request)
 			if err != nil {
 				fmt.Println(err)
 			}
 		})
-		m.HandleMessage(func(s *melody.Session, msg []byte) {
-			err := m.BroadcastOthers(msg, s)
-			if err != nil {
-				fmt.Println(err)
-			}
-		})
+
+		global.M.HandleMessage(api.BoardOnMessage)
 
 	}
 	return r

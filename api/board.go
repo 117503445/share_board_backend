@@ -17,7 +17,7 @@ func BoardGetData(c *gin.Context) {
 	var board model.Board
 	id := 1
 	model.DB.First(&board, id)
-	fmt.Println(board.Data)
+	//fmt.Println(board.Data)
 	c.String(200, board.Data)
 }
 
@@ -44,10 +44,7 @@ func BoardOnMessage(s *melody.Session, msg []byte) {
 
 	switch requestType {
 	case "add":
-
 		oldObjects := gjson.Get(board.Data, "objects").Array()
-		fmt.Println(len(oldObjects))
-
 		strObjects := "["
 		for _, o := range oldObjects {
 			strObjects += o.String() + ","
@@ -59,11 +56,11 @@ func BoardOnMessage(s *melody.Session, msg []byte) {
 		if err != nil {
 			fmt.Println(err)
 		}
-		fmt.Println(strObjects)
+		//fmt.Println(strObjects)
 
 		js := strings.ReplaceAll(strObjects, "\\\"", "\"")
 
-		fmt.Println(js)
+		//fmt.Println(js)
 
 		board.Data = js
 
@@ -74,7 +71,7 @@ func BoardOnMessage(s *melody.Session, msg []byte) {
 		}
 	case "replace":
 		board.Data = string(dataBytes)
-		fmt.Println(board.Data)
+		//fmt.Println(board.Data)
 		model.DB.Save(&board)
 		err := global.M.BroadcastOthers(msg, s)
 		if err != nil {

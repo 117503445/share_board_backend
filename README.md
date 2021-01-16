@@ -20,8 +20,11 @@ Websocket /api/v1/ws
 
 ```json
 {
-    "boardid":"fdc39841-618e-4bd4-9799-2153a6fca002", // boardid 指示画板
-    "pagenumber":1,
+    "type":"status",
+    "data":{
+        "boardid":"fdc39841-618e-4bd4-9799-2153a6fca002", // boardid 指示画板
+        "pagenumber":1,
+    }
 }
 ```
 
@@ -31,6 +34,7 @@ Websocket /api/v1/ws
 {
     "code": 1,
     "msg": "ok",
+    "type":"status",
     "data":{} // data 为全部笔迹数据
 }
 ```
@@ -41,6 +45,7 @@ Websocket /api/v1/ws
 {
     "code": 2,
     "msg": "board not exists or page number is illegal.",
+    "type":"status",
     "data":{} // data 为全部笔迹数据
 }
 ```
@@ -109,6 +114,13 @@ Websocket /api/v1/ws
 
 - 1 正常
 - 2 资源不存在
+
+## 名词说明
+
+Board 画板
+Page 画纸
+
+画板包含很多画纸
 
 ## Todo
 

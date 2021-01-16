@@ -9,7 +9,7 @@ func migration() {
 	if err := DB.AutoMigrate(&User{}); err != nil {
 		util.Log().Error("AutoMigrate User Failed", err)
 	}
-	if err := DB.AutoMigrate(&Board{}); err != nil {
-		util.Log().Error("AutoMigrate Board Failed", err)
+	if err := DB.AutoMigrate(&Page{}); err != nil {
+		util.Log().Error("AutoMigrate Page Failed", err)
 	}
 }

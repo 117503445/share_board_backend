@@ -1,7 +1,6 @@
 package service
 
 import (
-	"fmt"
 	"shareboard/model"
 	"shareboard/util"
 )
@@ -33,7 +32,7 @@ func PageGet(boardID string, pageNumber int) *model.Page {
 
 	}
 
-	fmt.Println(page)
+	//fmt.Println(page)
 
 	return &page
 }

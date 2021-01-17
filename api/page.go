@@ -23,9 +23,7 @@ func BoardGetData(c *gin.Context) {
 }
 
 func BoardOnMessage(s *melody.Session, msg []byte) {
-	var page model.Page
 
-	page = *service.PageGet("1",1)
 	//id := 1
 	//model.DB.First(&page, id)
 	//
@@ -47,6 +45,11 @@ func BoardOnMessage(s *melody.Session, msg []byte) {
 
 	switch requestType {
 	case "add":
+		var page model.Page
+		boardID := s.Keys["boardID"].(string)
+		pageNumber := s.Keys["pageNumber"].(int)
+		page = *service.PageGet(boardID, pageNumber)
+
 		oldObjects := gjson.Get(page.Data, "objects").Array()
 		strObjects := "["
 		for _, o := range oldObjects {
@@ -73,6 +76,11 @@ func BoardOnMessage(s *melody.Session, msg []byte) {
 			fmt.Println(err)
 		}
 	case "replace":
+		var page model.Page
+		boardID := s.Keys["boardID"].(string)
+		pageNumber := s.Keys["pageNumber"].(int)
+		page = *service.PageGet(boardID, pageNumber)
+
 		page.Data = string(dataBytes)
 		//fmt.Println(page.Data)
 		model.DB.Save(&page)
@@ -86,12 +94,15 @@ func BoardOnMessage(s *melody.Session, msg []byte) {
 		pageNumber := int(data["pagenumber"].(float64))
 
 		page := service.PageGet(boardID, pageNumber)
+		s.Keys = make(map[string]interface{})
+		s.Keys["boardID"] = boardID
+		s.Keys["pageNumber"] = pageNumber
 		//response, _ := json.Marshal(gin.H{
 		//	"code": 1,
 		//	"msg":  "ok",
 		//	"type": "status",
 		//	"data": page.Data})
-		response := fmt.Sprintf("{\"code\": 1,\"msg\":  \"ok\",\"type\": \"status\",\"data\": %v}",page.Data)
+		response := fmt.Sprintf("{\"code\": 1,\"msg\":  \"ok\",\"type\": \"status\",\"data\": %v}", page.Data)
 
 		_ = global.M.BroadcastFilter([]byte(response), func(q *melody.Session) bool {
 			return q == s

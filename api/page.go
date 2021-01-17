@@ -73,7 +73,8 @@ func BoardOnMessage(s *melody.Session, msg []byte) {
 		model.DB.Save(&page)
 
 		err = global.M.BroadcastFilter(msg, func(q *melody.Session) bool {
-			return q != s && boardID == q.Keys["boardID"].(string) &&  pageNumber == s.Keys["pageNumber"].(int) // 发送给其他 同白板 同页 的客户端
+			isOk := q != s && boardID == q.Keys["boardID"].(string) && pageNumber == q.Keys["pageNumber"].(int) // 发送给其他 同白板 同页 的客户端
+			return isOk
 		})
 		if err != nil {
 			fmt.Println(err)
@@ -89,7 +90,7 @@ func BoardOnMessage(s *melody.Session, msg []byte) {
 		model.DB.Save(&page)
 
 		err := global.M.BroadcastFilter(msg, func(q *melody.Session) bool {
-			return q != s && boardID == q.Keys["boardID"].(string) &&  pageNumber == s.Keys["pageNumber"].(int) // 发送给其他 同白板 同页 的客户端
+			return q != s && boardID == q.Keys["boardID"].(string) && pageNumber == q.Keys["pageNumber"].(int) // 发送给其他 同白板 同页 的客户端
 		})
 
 		if err != nil {

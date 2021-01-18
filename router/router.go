@@ -54,7 +54,7 @@ func NewRouter() *gin.Engine {
 			}
 		}
 
-		v1.GET("/board/:id", api.BoardGetData)
+		v1.GET("/board/:id", api.PageGetData)
 
 		v1.GET("/ws", func(c *gin.Context) {
 			err := global.M.HandleRequest(c.Writer, c.Request)
@@ -63,7 +63,7 @@ func NewRouter() *gin.Engine {
 			}
 		})
 
-		global.M.HandleMessage(api.BoardOnMessage)
+		global.M.HandleMessage(api.PageOnMessage)
 
 	}
 	return r

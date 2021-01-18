@@ -13,8 +13,8 @@ import (
 	"strings"
 )
 
-//BoardGetData 获取 Page 的 Data
-func BoardGetData(c *gin.Context) {
+//PageGetData 获取 Page 的 Data
+func PageGetData(c *gin.Context) {
 	var page model.Page
 	id := 1
 	model.DB.First(&page, id)
@@ -22,7 +22,7 @@ func BoardGetData(c *gin.Context) {
 	c.String(200, page.Data)
 }
 
-func BoardOnMessage(s *melody.Session, msg []byte) {
+func PageOnMessage(s *melody.Session, msg []byte) {
 
 	//id := 1
 	//model.DB.First(&page, id)

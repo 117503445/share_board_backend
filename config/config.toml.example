@@ -1,0 +1,36 @@
+# HTTP Server
+[server]
+Address = ":80"
+ServerAgent = "gf-app"
+LogPath = "./tmp/log/gf-app/server"
+
+# Logger.
+[logger]
+Path = "./tmp/log/gf-app"
+Level = "all"
+Stdout = true
+
+# Database.
+[database]
+link = "mysql:${user}:${pass}@tcp(localhost:3306)/share_board"
+debug = true
+forceCreate = true
+
+# Database logger.
+[database.logger]
+Path = "./tmp/log/gf-app/sql"
+Level = "all"
+Stdout = false
+
+# GF-CLI工具配置
+[gfcli]
+
+# 自定义DAO生成配置(默认是读取database配置)
+[[gfcli.gen.dao]]
+link = "mysql:${user}:${pass}@tcp(localhost:3306)/share_board"
+tables = "role,user,user_role,page"
+
+[elasticsearch]
+enabled = false
+username = "elastic"
+password = "changeme"

@@ -1,70 +1,41 @@
 package router
 
 import (
-	"fmt"
-	"github.com/gin-gonic/gin"
-	"gopkg.in/olahol/melody.v1"
-	"math"
-	"net/http"
-	"shareboard/api"
-	"shareboard/global"
-	"shareboard/middleware"
+	"share_board/app/api"
+	"share_board/app/middleware"
+	"share_board/library/websocket"
+
+	"github.com/gogf/gf/frame/g"
+	"github.com/gogf/gf/net/ghttp"
 )
 
-// NewRouter 路由配置
-func NewRouter() *gin.Engine {
-	r := gin.Default()
+func middlewareAuth(r *ghttp.Request) {
+	middleware.Auth.MiddlewareFunc()(r)
+	r.Middleware.Next()
+}
 
-	global.M = melody.New()
-	global.M.Upgrader.CheckOrigin = func(r *http.Request) bool { return true }
-	global.M.Config.MaxMessageSize = math.MaxInt64
+func init() {
+	s := g.Server()
+	s.Group("/", func(group *ghttp.RouterGroup) {
+		group.ALL("/", api.Hello)
+		group.Group("/api", func(group *ghttp.RouterGroup) {
 
-	r.Use(middleware.Cors())
+			group.GET("/ws", func(r *ghttp.Request) {
+				if err := websocket.M.HandleRequest(r.Response.Writer, r.Request); err != nil {
+					g.Log().Line().Panic(err)
+				}
+			})
+			websocket.M.HandleMessage(api.PageOnMessage)
 
-	// 路由
-	v1 := r.Group("/api/v1")
-	{
-		v1.POST("ping", api.Ping)
+			group.Group("/user", func(group *ghttp.RouterGroup) {
+				group.POST("/login", middleware.Auth.LoginHandler)
+				group.POST("/", api.User.SignUp)
 
-		user := v1.Group("user")
-		{
-			// 用户注册
-			user.POST("", api.UserCreate)
-
-			// 用户登录
-			user.POST("login", middleware.JwtMiddleware.LoginHandler)
-
-			auth := user.Group("")
-			// 需要登录保护
-			auth.Use(middleware.JwtMiddleware.MiddlewareFunc())
-			{
-				// User Routing
-				auth.GET("me", api.UserRead)
-				auth.PUT("", api.UserUpdate)
-			}
-		}
-		admin := v1.Group("admin")
-		// 需要登录保护
-		admin.Use(middleware.JwtMiddleware.MiddlewareFunc())
-		admin.Use(middleware.HasRole("admin"))
-		{
-			user := admin.Group("user")
-			{
-				user.GET(":id", api.AdminUserRead)
-			}
-		}
-
-		v1.GET("/board/:id", api.PageGetData)
-
-		v1.GET("/ws", func(c *gin.Context) {
-			err := global.M.HandleRequest(c.Writer, c.Request)
-			if err != nil {
-				fmt.Println(err)
-			}
+				group.Group("/", func(group *ghttp.RouterGroup) {
+					group.Middleware(middlewareAuth)
+					group.GET("/", api.User.GetInfo)
+				})
+			})
 		})
-
-		global.M.HandleMessage(api.PageOnMessage)
-
-	}
-	return r
+	})
 }

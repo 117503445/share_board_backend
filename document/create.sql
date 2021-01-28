@@ -55,8 +55,9 @@ CREATE TABLE `page`  (
                           `updated_at` datetime(3) NULL DEFAULT NULL,
                           `deleted_at` datetime(3) NULL DEFAULT NULL,
                           `page_number` int NULL DEFAULT NULL,
-                          `board_id` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL,
+                          `board_id` VARCHAR(128) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL,
                           `data` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL,
+                          UNIQUE KEY `board` (`page_number`,`board_id`),
                           PRIMARY KEY (`id`) USING BTREE,
                           INDEX `idx_pages_deleted_at`(`deleted_at`) USING BTREE
 ) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;

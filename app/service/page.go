@@ -7,7 +7,6 @@ import (
 )
 
 func GetPageByBoardIDPageNumber(boardID string, pageNumber int) *model.Page {
-	// todo 并发时会出错，执行了 2 次创建语句。要修改设计或使用事务
 	var page model.Page
 	_ = dao.Page.Where("board_id = ?", boardID).Where("page_number = ?", pageNumber).Struct(&page)
 	//if err != nil {

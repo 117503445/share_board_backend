@@ -8,7 +8,7 @@ import (
 )
 
 // @title       share_board API
-// @version     1.0.0
+// @version     1.0.1
 // @description `share_board` HaoTian Qi 的 共享白板，基于 Goframe + Websocket
 
 // @contact.name 117503445

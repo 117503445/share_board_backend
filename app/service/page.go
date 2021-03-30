@@ -14,7 +14,7 @@ func GetPageByBoardIDPageNumber(boardID string, pageNumber int) *model.Page {
 	//	g.Log().Line().Error(err)
 	//}
 	if page.Id == 0 {
-		page.Data = "{\"version\":\"2.1.0\",\"objects\":[]}"
+		page.Data = "{\"version\":\"4.3.1\",\"objects\":[]}"
 		page.PageNumber = pageNumber
 		page.BoardId = boardID
 		if _, err := dao.Page.Insert(page); err != nil {

@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"github.com/gogf/gf/frame/g"
 	"gopkg.in/olahol/melody.v1"
+	"share_board_backend/library/websocket"
 )
 
 func PageOnMessage(s *melody.Session, msg []byte) {
@@ -17,9 +18,9 @@ func PageOnMessage(s *melody.Session, msg []byte) {
 	route := requestBody["route"]
 	switch route {
 	case "stroke-create":
-		strokeCreate(s, requestBody)
+		broadcastToOther(s, msg)
 	case "strokes-delete":
-		strokesDelete(s, requestBody)
+		broadcastToOther(s, msg)
 	case "strokes-clear":
 		strokesClear(s, requestBody)
 	case "change-page-index":
@@ -28,11 +29,22 @@ func PageOnMessage(s *melody.Session, msg []byte) {
 
 }
 
-func strokeCreate(s *melody.Session, requestBody map[string]interface{}) {
+//broadcastToOther 转发消息给其他的 Page
+func broadcastToOther(s *melody.Session, msg []byte) {
+	err := websocket.M.BroadcastFilter(msg, func(q *melody.Session) bool {
+		return q != s
+	})
+
+	if err != nil {
+		g.Log().Line().Debug(err)
+	}
+}
+
+func strokeCreate(s *melody.Session, msg []byte) {
 
 }
 
-func strokesDelete(s *melody.Session, requestBody map[string]interface{}) {
+func strokesDelete(s *melody.Session, msg []byte) {
 
 }
 

@@ -50,21 +50,5 @@ CREATE TABLE `user` (
     INDEX `idx_user_deleted_at`(`deleted_at`) USING BTREE
 ) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
 
--- ----------------------------
--- Table structure for task
--- ----------------------------
-DROP TABLE IF EXISTS `task`;
-
-CREATE TABLE `task` (
-    `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT,
-    `created_at` datetime(3) NULL DEFAULT NULL,
-    `updated_at` datetime(3) NULL DEFAULT NULL,
-    `deleted_at` datetime(3) NULL DEFAULT NULL,
-    `title` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL,
-    `done` boolean NULL DEFAULT NULL,
-    PRIMARY KEY (`id`) USING BTREE,
-    INDEX `idx_user_deleted_at`(`deleted_at`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
-
 SET
     FOREIGN_KEY_CHECKS = 1;

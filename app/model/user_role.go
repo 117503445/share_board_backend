@@ -5,10 +5,16 @@
 package model
 
 import (
-	"share_board/app/model/internal"
+	"share_board_backend/app/model/internal"
 )
 
 // UserRole is the golang structure for table user_role.
 type UserRole internal.UserRole
 
 // Fill with you ideas below.
+type UserRoleApiRequest struct {
+}
+type UserRoleApiResponse struct {
+	UserId uint64 `orm:"user_id,primary" json:"userId"` //
+	RoleId uint64 `orm:"role_id,primary" json:"roleId"` //
+}

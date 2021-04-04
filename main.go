@@ -1,15 +1,16 @@
 package main
 
 import (
-	_ "share_board/boot"
-	_ "share_board/router"
+	_ "share_board_backend/boot"
+	_ "share_board_backend/router"
 
 	"github.com/gogf/gf/frame/g"
 )
 
-// @title       share_board API
-// @version     1.0.1
-// @description `share_board` HaoTian Qi 的 共享白板，基于 Goframe + Websocket
+// @title       share_board_backend API
+// @version     1.0.0
+// @description `share_board_backend` 117503445 的 共享白板 api
+// @schemes     http
 
 // @contact.name 117503445
 // @contact.url http://www.117503445.top
@@ -22,5 +23,7 @@ import (
 // @name Authorization
 
 func main() {
-	g.Server().Run()
+	s := g.Server()
+	s.SetDumpRouterMap(g.Cfg().GetBool("server.DumpRouterMap"))
+	s.Run()
 }

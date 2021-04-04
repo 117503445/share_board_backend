@@ -5,20 +5,20 @@
 package dao
 
 import (
-	"share_board/app/dao/internal"
+	"share_board_backend/app/dao/internal"
 )
 
-// pageDao is the manager for logic model data accessing
+// taskDao is the manager for logic model data accessing
 // and custom defined data operations functions management. You can define
 // methods on it to extend its functionality as you wish.
-type pageDao struct {
-	*internal.PageDao
+type taskDao struct {
+	internal.TaskDao
 }
 
 var (
-	// Page is globally public accessible object for table page operations.
-	Page = &pageDao{
-		internal.Page,
+	// Task is globally public accessible object for table task operations.
+	Task = taskDao{
+		internal.Task,
 	}
 )
 

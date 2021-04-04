@@ -3,8 +3,8 @@ package service
 import (
 	"errors"
 	"fmt"
-	"share_board/app/dao"
-	"share_board/app/model"
+	"share_board_backend/app/dao"
+	"share_board_backend/app/model"
 
 	"github.com/gogf/gf/frame/g"
 )
@@ -40,7 +40,7 @@ func (s *userService) GetUserByUsernamePassword(serviceReq *model.UserServiceLog
 	user := &model.User{}
 
 	if err := dao.User.Where(g.Map{"username=": serviceReq.Username}).Struct(user); err != nil {
-		g.Log().Line().Error(err)
+		// g.Log().Line().Error(err)
 		return nil
 	} else {
 		if model.CheckPassword(serviceReq.Password, user.Password) {

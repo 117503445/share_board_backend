@@ -8,12 +8,11 @@ import (
 var Es *elasticsearch.Client
 
 func init() {
-	if g.Cfg().Get("elasticsearch.enabled").(bool) {
+	if len(g.Cfg().GetString("elasticsearch.index")) > 0 {
 		g.Log().Line().Info("elasticsearch init")
 		cfg := elasticsearch.Config{
-			// ...
-			Username: g.Cfg().Get("elasticsearch.username").(string),
-			Password: g.Cfg().Get("elasticsearch.password").(string),
+			Username: g.Cfg().GetString("elasticsearch.username"),
+			Password: g.Cfg().GetString("elasticsearch.password"),
 		}
 		var err error
 		if Es, err = elasticsearch.NewClient(cfg); err != nil {

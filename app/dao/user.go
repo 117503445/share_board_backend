@@ -5,7 +5,7 @@
 package dao
 
 import (
-	"share_board/app/dao/internal"
+	"share_board_backend/app/dao/internal"
 )
 
 // userDao is the manager for logic model data accessing
@@ -18,7 +18,7 @@ type userDao struct {
 var (
 	// User is globally public accessible object for table user operations.
 	User = &userDao{
-		internal.User,
+		&internal.User,
 	}
 )
 

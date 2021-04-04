@@ -5,7 +5,7 @@
 package dao
 
 import (
-	"share_board/app/dao/internal"
+	"share_board_backend/app/dao/internal"
 )
 
 // roleDao is the manager for logic model data accessing
@@ -18,7 +18,7 @@ type roleDao struct {
 var (
 	// Role is globally public accessible object for table role operations.
 	Role = &roleDao{
-		internal.Role,
+		&internal.Role,
 	}
 )
 

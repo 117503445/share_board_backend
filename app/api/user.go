@@ -1,10 +1,10 @@
 package api
 
 import (
-	"share_board/app/dao"
-	"share_board/app/model"
-	"share_board/app/service"
-	"share_board/library/response"
+	"share_board_backend/app/dao"
+	"share_board_backend/app/model"
+	"share_board_backend/app/service"
+	"share_board_backend/library/response"
 
 	"github.com/gogf/gf/frame/g"
 	"github.com/gogf/gf/net/ghttp"

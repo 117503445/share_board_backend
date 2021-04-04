@@ -12,7 +12,7 @@ import (
 	"github.com/gogf/gf/frame/gmvc"
 	"time"
 
-	"share_board/app/model"
+	"share_board_backend/app/model"
 )
 
 // UserRoleDao is the manager for logic model data accessing
@@ -26,19 +26,19 @@ type UserRoleDao struct {
 
 // UserRoleColumns defines and stores column names for table user_role.
 type userRoleColumns struct {
-	UserId  string //   
-    RoleId  string //
+	UserId string //
+	RoleId string //
 }
 
 var (
 	// UserRole is globally public accessible object for table user_role operations.
-	UserRole = &UserRoleDao{
+	UserRole = UserRoleDao{
 		M:     g.DB("default").Model("user_role").Safe(),
 		DB:    g.DB("default"),
 		Table: "user_role",
 		Columns: userRoleColumns{
-			UserId: "user_id",  
-            RoleId: "role_id",
+			UserId: "user_id",
+			RoleId: "role_id",
 		},
 	}
 )
@@ -74,7 +74,7 @@ func (d *UserRoleDao) Slave() *UserRoleDao {
 
 // Args sets custom arguments for model operation.
 func (d *UserRoleDao) Args(args ...interface{}) *UserRoleDao {
-	return &UserRoleDao{M: d.M.Args(args ...)}
+	return &UserRoleDao{M: d.M.Args(args...)}
 }
 
 // LeftJoin does "LEFT JOIN ... ON ..." statement on the model.

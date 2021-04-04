@@ -6,8 +6,8 @@ package dao
 
 import (
 	"reflect"
-	"share_board/app/dao/internal"
-	"share_board/app/model"
+	"share_board_backend/app/dao/internal"
+	"share_board_backend/app/model"
 
 	"github.com/gogf/gf/frame/g"
 )
@@ -22,7 +22,7 @@ type userRoleDao struct {
 var (
 	// UserRole is globally public accessible object for table user_role operations.
 	UserRole = &userRoleDao{
-		internal.UserRole,
+		&internal.UserRole,
 	}
 )
 

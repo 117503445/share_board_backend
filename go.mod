@@ -1,14 +1,18 @@
-module share_board
+module share_board_backend
 
 require (
 	github.com/elastic/go-elasticsearch/v8 v8.0.0-20201229214741-2366c2514674
 	github.com/gogf/gf v1.15.1
 	github.com/gogf/gf-jwt v1.1.1
 	github.com/gogf/swagger v1.2.0
-	github.com/tidwall/gjson v1.6.7
-	github.com/tidwall/sjson v1.1.4
-	golang.org/x/crypto v0.0.0-20190308221718-c2843e01d9a2
-	gopkg.in/olahol/melody.v1 v1.0.0-20170518105555-d52139073376
+	github.com/kr/text v0.2.0 // indirect
+	github.com/niemeyer/pretty v0.0.0-20200227124842-a10e7caefd8e // indirect
+	golang.org/x/crypto v0.0.0-20200622213623-75b288015ac9
+	golang.org/x/net v0.0.0-20210323141857-08027d57d8cf // indirect
+	golang.org/x/sys v0.0.0-20210320140829-1e4c9ba3b0c4 // indirect
+	golang.org/x/text v0.3.5 // indirect
+	gopkg.in/check.v1 v1.0.0-20200227125254-8fa46927fb4f // indirect
+	gopkg.in/yaml.v3 v3.0.0-20200615113413-eeeca48fe776 // indirect
 )
 
-go 1.15
+go 1.16

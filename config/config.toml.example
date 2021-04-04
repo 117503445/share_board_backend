@@ -3,18 +3,24 @@
 Address = ":80"
 ServerAgent = "gf-app"
 LogPath = "./tmp/log/gf-app/server"
+DumpRouterMap = false
 
 # Logger.
 [logger]
 Path = "./tmp/log/gf-app"
 Level = "all"
 Stdout = true
+elasticsearch = true # 是否启用 log 发送至 elasticsearch
 
 # Database.
 [database]
-link = "mysql:${user}:${pass}@tcp(localhost:3306)/share_board"
+link = "mysql:${user}:${pass}@tcp(localhost:3306)/share_board_backend"
 debug = true
-forceCreate = true
+forceCreate = true # 强制创建,启用后强制删除旧数据库后再创建新的,常用于开发
+sqlOnCreate = [
+    "./document/create.sql",
+    "./document/dev-data.sql"
+] # 创建数据库时启用,按顺序执行指定路径的 SQL
 
 # Database logger.
 [database.logger]
@@ -27,10 +33,10 @@ Stdout = false
 
 # 自定义DAO生成配置(默认是读取database配置)
 [[gfcli.gen.dao]]
-link = "mysql:${user}:${pass}@tcp(localhost:3306)/share_board"
-tables = "role,user,user_role,page"
+link = "mysql:${user}:${pass}@tcp(localhost:3306)/share_board_backend"
+tables = ""
 
 [elasticsearch]
-enabled = false
 username = "elastic"
 password = "changeme"
+index = "share_board_backend"

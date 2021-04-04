@@ -12,43 +12,41 @@ import (
 	"github.com/gogf/gf/frame/gmvc"
 	"time"
 
-	"share_board/app/model"
+	"share_board_backend/app/model"
 )
 
-// PageDao is the manager for logic model data accessing
+// TaskDao is the manager for logic model data accessing
 // and custom defined data operations functions management.
-type PageDao struct {
+type TaskDao struct {
 	gmvc.M
 	DB      gdb.DB
 	Table   string
-	Columns pageColumns
+	Columns taskColumns
 }
 
-// PageColumns defines and stores column names for table page.
-type pageColumns struct {
-	Id          string //   
-    CreatedAt   string //   
-    UpdatedAt   string //   
-    DeletedAt   string //   
-    PageNumber  string //   
-    BoardId     string //   
-    Data        string //
+// TaskColumns defines and stores column names for table task.
+type taskColumns struct {
+	Id        string //
+	CreatedAt string //
+	UpdatedAt string //
+	DeletedAt string //
+	Title     string //
+	Done      string //
 }
 
 var (
-	// Page is globally public accessible object for table page operations.
-	Page = &PageDao{
-		M:     g.DB("default").Model("page").Safe(),
+	// Task is globally public accessible object for table task operations.
+	Task = TaskDao{
+		M:     g.DB("default").Model("task").Safe(),
 		DB:    g.DB("default"),
-		Table: "page",
-		Columns: pageColumns{
-			Id:         "id",           
-            CreatedAt:  "created_at",   
-            UpdatedAt:  "updated_at",   
-            DeletedAt:  "deleted_at",   
-            PageNumber: "page_number",  
-            BoardId:    "board_id",     
-            Data:       "data",
+		Table: "task",
+		Columns: taskColumns{
+			Id:        "id",
+			CreatedAt: "created_at",
+			UpdatedAt: "updated_at",
+			DeletedAt: "deleted_at",
+			Title:     "title",
+			Done:      "done",
 		},
 	}
 )
@@ -57,34 +55,34 @@ var (
 // of current DB object and with given context in it.
 // Note that this returned DB object can be used only once, so do not assign it to
 // a global or package variable for long using.
-func (d *PageDao) Ctx(ctx context.Context) *PageDao {
-	return &PageDao{M: d.M.Ctx(ctx)}
+func (d *TaskDao) Ctx(ctx context.Context) *TaskDao {
+	return &TaskDao{M: d.M.Ctx(ctx)}
 }
 
 // As sets an alias name for current table.
-func (d *PageDao) As(as string) *PageDao {
-	return &PageDao{M: d.M.As(as)}
+func (d *TaskDao) As(as string) *TaskDao {
+	return &TaskDao{M: d.M.As(as)}
 }
 
 // TX sets the transaction for current operation.
-func (d *PageDao) TX(tx *gdb.TX) *PageDao {
-	return &PageDao{M: d.M.TX(tx)}
+func (d *TaskDao) TX(tx *gdb.TX) *TaskDao {
+	return &TaskDao{M: d.M.TX(tx)}
 }
 
 // Master marks the following operation on master node.
-func (d *PageDao) Master() *PageDao {
-	return &PageDao{M: d.M.Master()}
+func (d *TaskDao) Master() *TaskDao {
+	return &TaskDao{M: d.M.Master()}
 }
 
 // Slave marks the following operation on slave node.
 // Note that it makes sense only if there's any slave node configured.
-func (d *PageDao) Slave() *PageDao {
-	return &PageDao{M: d.M.Slave()}
+func (d *TaskDao) Slave() *TaskDao {
+	return &TaskDao{M: d.M.Slave()}
 }
 
 // Args sets custom arguments for model operation.
-func (d *PageDao) Args(args ...interface{}) *PageDao {
-	return &PageDao{M: d.M.Args(args ...)}
+func (d *TaskDao) Args(args ...interface{}) *TaskDao {
+	return &TaskDao{M: d.M.Args(args...)}
 }
 
 // LeftJoin does "LEFT JOIN ... ON ..." statement on the model.
@@ -92,8 +90,8 @@ func (d *PageDao) Args(args ...interface{}) *PageDao {
 // and also with its alias name, like:
 // Table("user").LeftJoin("user_detail", "user_detail.uid=user.uid")
 // Table("user", "u").LeftJoin("user_detail", "ud", "ud.uid=u.uid")
-func (d *PageDao) LeftJoin(table ...string) *PageDao {
-	return &PageDao{M: d.M.LeftJoin(table...)}
+func (d *TaskDao) LeftJoin(table ...string) *TaskDao {
+	return &TaskDao{M: d.M.LeftJoin(table...)}
 }
 
 // RightJoin does "RIGHT JOIN ... ON ..." statement on the model.
@@ -101,8 +99,8 @@ func (d *PageDao) LeftJoin(table ...string) *PageDao {
 // and also with its alias name, like:
 // Table("user").RightJoin("user_detail", "user_detail.uid=user.uid")
 // Table("user", "u").RightJoin("user_detail", "ud", "ud.uid=u.uid")
-func (d *PageDao) RightJoin(table ...string) *PageDao {
-	return &PageDao{M: d.M.RightJoin(table...)}
+func (d *TaskDao) RightJoin(table ...string) *TaskDao {
+	return &TaskDao{M: d.M.RightJoin(table...)}
 }
 
 // InnerJoin does "INNER JOIN ... ON ..." statement on the model.
@@ -110,36 +108,36 @@ func (d *PageDao) RightJoin(table ...string) *PageDao {
 // and also with its alias name, like:
 // Table("user").InnerJoin("user_detail", "user_detail.uid=user.uid")
 // Table("user", "u").InnerJoin("user_detail", "ud", "ud.uid=u.uid")
-func (d *PageDao) InnerJoin(table ...string) *PageDao {
-	return &PageDao{M: d.M.InnerJoin(table...)}
+func (d *TaskDao) InnerJoin(table ...string) *TaskDao {
+	return &TaskDao{M: d.M.InnerJoin(table...)}
 }
 
 // Fields sets the operation fields of the model, multiple fields joined using char ','.
 // The parameter <fieldNamesOrMapStruct> can be type of string/map/*map/struct/*struct.
-func (d *PageDao) Fields(fieldNamesOrMapStruct ...interface{}) *PageDao {
-	return &PageDao{M: d.M.Fields(fieldNamesOrMapStruct...)}
+func (d *TaskDao) Fields(fieldNamesOrMapStruct ...interface{}) *TaskDao {
+	return &TaskDao{M: d.M.Fields(fieldNamesOrMapStruct...)}
 }
 
 // FieldsEx sets the excluded operation fields of the model, multiple fields joined using char ','.
 // The parameter <fieldNamesOrMapStruct> can be type of string/map/*map/struct/*struct.
-func (d *PageDao) FieldsEx(fieldNamesOrMapStruct ...interface{}) *PageDao {
-	return &PageDao{M: d.M.FieldsEx(fieldNamesOrMapStruct...)}
+func (d *TaskDao) FieldsEx(fieldNamesOrMapStruct ...interface{}) *TaskDao {
+	return &TaskDao{M: d.M.FieldsEx(fieldNamesOrMapStruct...)}
 }
 
 // Option sets the extra operation option for the model.
-func (d *PageDao) Option(option int) *PageDao {
-	return &PageDao{M: d.M.Option(option)}
+func (d *TaskDao) Option(option int) *TaskDao {
+	return &TaskDao{M: d.M.Option(option)}
 }
 
 // OmitEmpty sets OPTION_OMITEMPTY option for the model, which automatically filers
 // the data and where attributes for empty values.
-func (d *PageDao) OmitEmpty() *PageDao {
-	return &PageDao{M: d.M.OmitEmpty()}
+func (d *TaskDao) OmitEmpty() *TaskDao {
+	return &TaskDao{M: d.M.OmitEmpty()}
 }
 
 // Filter marks filtering the fields which does not exist in the fields of the operated table.
-func (d *PageDao) Filter() *PageDao {
-	return &PageDao{M: d.M.Filter()}
+func (d *TaskDao) Filter() *TaskDao {
+	return &TaskDao{M: d.M.Filter()}
 }
 
 // Where sets the condition statement for the model. The parameter <where> can be type of
@@ -153,8 +151,8 @@ func (d *PageDao) Filter() *PageDao {
 // Where("status IN (?)", g.Slice{1,2,3})
 // Where("age IN(?,?)", 18, 50)
 // Where(User{ Id : 1, UserName : "john"})
-func (d *PageDao) Where(where interface{}, args ...interface{}) *PageDao {
-	return &PageDao{M: d.M.Where(where, args...)}
+func (d *TaskDao) Where(where interface{}, args ...interface{}) *TaskDao {
+	return &TaskDao{M: d.M.Where(where, args...)}
 }
 
 // WherePri does the same logic as M.Where except that if the parameter <where>
@@ -162,54 +160,54 @@ func (d *PageDao) Where(where interface{}, args ...interface{}) *PageDao {
 // key value. That is, if primary key is "id" and given <where> parameter as "123", the
 // WherePri function treats the condition as "id=123", but M.Where treats the condition
 // as string "123".
-func (d *PageDao) WherePri(where interface{}, args ...interface{}) *PageDao {
-	return &PageDao{M: d.M.WherePri(where, args...)}
+func (d *TaskDao) WherePri(where interface{}, args ...interface{}) *TaskDao {
+	return &TaskDao{M: d.M.WherePri(where, args...)}
 }
 
 // And adds "AND" condition to the where statement.
-func (d *PageDao) And(where interface{}, args ...interface{}) *PageDao {
-	return &PageDao{M: d.M.And(where, args...)}
+func (d *TaskDao) And(where interface{}, args ...interface{}) *TaskDao {
+	return &TaskDao{M: d.M.And(where, args...)}
 }
 
 // Or adds "OR" condition to the where statement.
-func (d *PageDao) Or(where interface{}, args ...interface{}) *PageDao {
-	return &PageDao{M: d.M.Or(where, args...)}
+func (d *TaskDao) Or(where interface{}, args ...interface{}) *TaskDao {
+	return &TaskDao{M: d.M.Or(where, args...)}
 }
 
 // Group sets the "GROUP BY" statement for the model.
-func (d *PageDao) Group(groupBy string) *PageDao {
-	return &PageDao{M: d.M.Group(groupBy)}
+func (d *TaskDao) Group(groupBy string) *TaskDao {
+	return &TaskDao{M: d.M.Group(groupBy)}
 }
 
 // Order sets the "ORDER BY" statement for the model.
-func (d *PageDao) Order(orderBy ...string) *PageDao {
-	return &PageDao{M: d.M.Order(orderBy...)}
+func (d *TaskDao) Order(orderBy ...string) *TaskDao {
+	return &TaskDao{M: d.M.Order(orderBy...)}
 }
 
 // Limit sets the "LIMIT" statement for the model.
 // The parameter <limit> can be either one or two number, if passed two number is passed,
 // it then sets "LIMIT limit[0],limit[1]" statement for the model, or else it sets "LIMIT limit[0]"
 // statement.
-func (d *PageDao) Limit(limit ...int) *PageDao {
-	return &PageDao{M: d.M.Limit(limit...)}
+func (d *TaskDao) Limit(limit ...int) *TaskDao {
+	return &TaskDao{M: d.M.Limit(limit...)}
 }
 
 // Offset sets the "OFFSET" statement for the model.
 // It only makes sense for some databases like SQLServer, PostgreSQL, etc.
-func (d *PageDao) Offset(offset int) *PageDao {
-	return &PageDao{M: d.M.Offset(offset)}
+func (d *TaskDao) Offset(offset int) *TaskDao {
+	return &TaskDao{M: d.M.Offset(offset)}
 }
 
 // Page sets the paging number for the model.
 // The parameter <page> is started from 1 for paging.
 // Note that, it differs that the Limit function start from 0 for "LIMIT" statement.
-func (d *PageDao) Page(page, limit int) *PageDao {
-	return &PageDao{M: d.M.Page(page, limit)}
+func (d *TaskDao) Page(page, limit int) *TaskDao {
+	return &TaskDao{M: d.M.Page(page, limit)}
 }
 
 // Batch sets the batch operation number for the model.
-func (d *PageDao) Batch(batch int) *PageDao {
-	return &PageDao{M: d.M.Batch(batch)}
+func (d *TaskDao) Batch(batch int) *TaskDao {
+	return &TaskDao{M: d.M.Batch(batch)}
 }
 
 // Cache sets the cache feature for the model. It caches the result of the sql, which means
@@ -224,8 +222,8 @@ func (d *PageDao) Batch(batch int) *PageDao {
 // control the cache like changing the <duration> or clearing the cache with specified <name>.
 //
 // Note that, the cache feature is disabled if the model is operating on a transaction.
-func (d *PageDao) Cache(duration time.Duration, name ...string) *PageDao {
-	return &PageDao{M: d.M.Cache(duration, name...)}
+func (d *TaskDao) Cache(duration time.Duration, name ...string) *TaskDao {
+	return &TaskDao{M: d.M.Cache(duration, name...)}
 }
 
 // Data sets the operation data for the model.
@@ -235,39 +233,39 @@ func (d *PageDao) Cache(duration time.Duration, name ...string) *PageDao {
 // Data("uid", 10000)
 // Data(g.Map{"uid": 10000, "name":"john"})
 // Data(g.Slice{g.Map{"uid": 10000, "name":"john"}, g.Map{"uid": 20000, "name":"smith"})
-func (d *PageDao) Data(data ...interface{}) *PageDao {
-	return &PageDao{M: d.M.Data(data...)}
+func (d *TaskDao) Data(data ...interface{}) *TaskDao {
+	return &TaskDao{M: d.M.Data(data...)}
 }
 
 // All does "SELECT FROM ..." statement for the model.
-// It retrieves the records from table and returns the result as []*model.Page.
+// It retrieves the records from table and returns the result as []*model.Task.
 // It returns nil if there's no record retrieved with the given conditions from table.
 //
 // The optional parameter <where> is the same as the parameter of M.Where function,
 // see M.Where.
-func (d *PageDao) All(where ...interface{}) ([]*model.Page, error) {
+func (d *TaskDao) All(where ...interface{}) ([]*model.Task, error) {
 	all, err := d.M.All(where...)
 	if err != nil {
 		return nil, err
 	}
-	var entities []*model.Page
+	var entities []*model.Task
 	if err = all.Structs(&entities); err != nil && err != sql.ErrNoRows {
 		return nil, err
 	}
 	return entities, nil
 }
 
-// One retrieves one record from table and returns the result as *model.Page.
+// One retrieves one record from table and returns the result as *model.Task.
 // It returns nil if there's no record retrieved with the given conditions from table.
 //
 // The optional parameter <where> is the same as the parameter of M.Where function,
 // see M.Where.
-func (d *PageDao) One(where ...interface{}) (*model.Page, error) {
+func (d *TaskDao) One(where ...interface{}) (*model.Task, error) {
 	one, err := d.M.One(where...)
 	if err != nil {
 		return nil, err
 	}
-	var entity *model.Page
+	var entity *model.Task
 	if err = one.Struct(&entity); err != nil && err != sql.ErrNoRows {
 		return nil, err
 	}
@@ -276,12 +274,12 @@ func (d *PageDao) One(where ...interface{}) (*model.Page, error) {
 
 // FindOne retrieves and returns a single Record by M.WherePri and M.One.
 // Also see M.WherePri and M.One.
-func (d *PageDao) FindOne(where ...interface{}) (*model.Page, error) {
+func (d *TaskDao) FindOne(where ...interface{}) (*model.Task, error) {
 	one, err := d.M.FindOne(where...)
 	if err != nil {
 		return nil, err
 	}
-	var entity *model.Page
+	var entity *model.Task
 	if err = one.Struct(&entity); err != nil && err != sql.ErrNoRows {
 		return nil, err
 	}
@@ -290,12 +288,12 @@ func (d *PageDao) FindOne(where ...interface{}) (*model.Page, error) {
 
 // FindAll retrieves and returns Result by by M.WherePri and M.All.
 // Also see M.WherePri and M.All.
-func (d *PageDao) FindAll(where ...interface{}) ([]*model.Page, error) {
+func (d *TaskDao) FindAll(where ...interface{}) ([]*model.Task, error) {
 	all, err := d.M.FindAll(where...)
 	if err != nil {
 		return nil, err
 	}
-	var entities []*model.Page
+	var entities []*model.Task
 	if err = all.Structs(&entities); err != nil && err != sql.ErrNoRows {
 		return nil, err
 	}
@@ -318,7 +316,7 @@ func (d *PageDao) FindAll(where ...interface{}) ([]*model.Page, error) {
 //
 // user := (*User)(nil)
 // err  := dao.User.Where("id", 1).Struct(&user)
-func (d *PageDao) Struct(pointer interface{}, where ...interface{}) error {
+func (d *TaskDao) Struct(pointer interface{}, where ...interface{}) error {
 	return d.M.Struct(pointer, where...)
 }
 
@@ -338,7 +336,7 @@ func (d *PageDao) Struct(pointer interface{}, where ...interface{}) error {
 //
 // users := ([]*User)(nil)
 // err   := dao.User.Structs(&users)
-func (d *PageDao) Structs(pointer interface{}, where ...interface{}) error {
+func (d *TaskDao) Structs(pointer interface{}, where ...interface{}) error {
 	return d.M.Structs(pointer, where...)
 }
 
@@ -363,14 +361,14 @@ func (d *PageDao) Structs(pointer interface{}, where ...interface{}) error {
 //
 // users := ([]*User)(nil)
 // err   := dao.User.Scan(&users)
-func (d *PageDao) Scan(pointer interface{}, where ...interface{}) error {
+func (d *TaskDao) Scan(pointer interface{}, where ...interface{}) error {
 	return d.M.Scan(pointer, where...)
 }
 
 // Chunk iterates the table with given size and callback function.
-func (d *PageDao) Chunk(limit int, callback func(entities []*model.Page, err error) bool) {
+func (d *TaskDao) Chunk(limit int, callback func(entities []*model.Task, err error) bool) {
 	d.M.Chunk(limit, func(result gdb.Result, err error) bool {
-		var entities []*model.Page
+		var entities []*model.Task
 		err = result.Structs(&entities)
 		if err == sql.ErrNoRows {
 			return false
@@ -380,16 +378,16 @@ func (d *PageDao) Chunk(limit int, callback func(entities []*model.Page, err err
 }
 
 // LockUpdate sets the lock for update for current operation.
-func (d *PageDao) LockUpdate() *PageDao {
-	return &PageDao{M: d.M.LockUpdate()}
+func (d *TaskDao) LockUpdate() *TaskDao {
+	return &TaskDao{M: d.M.LockUpdate()}
 }
 
 // LockShared sets the lock in share mode for current operation.
-func (d *PageDao) LockShared() *PageDao {
-	return &PageDao{M: d.M.LockShared()}
+func (d *TaskDao) LockShared() *TaskDao {
+	return &TaskDao{M: d.M.LockShared()}
 }
 
 // Unscoped enables/disables the soft deleting feature.
-func (d *PageDao) Unscoped() *PageDao {
-	return &PageDao{M: d.M.Unscoped()}
+func (d *TaskDao) Unscoped() *TaskDao {
+	return &TaskDao{M: d.M.Unscoped()}
 }

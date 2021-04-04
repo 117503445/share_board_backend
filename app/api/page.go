@@ -18,14 +18,41 @@ func PageOnMessage(s *melody.Session, msg []byte) {
 	route := requestBody["route"]
 	switch route {
 	case "stroke-create":
-		broadcastToOther(s, msg)
+		strokeCreate(s, msg)
 	case "strokes-delete":
-		broadcastToOther(s, msg)
+		strokesDelete(s, msg)
 	case "strokes-clear":
 		strokesClear(s, requestBody)
 	case "change-page-index":
 		changePageIndex(s, requestBody)
 	}
+
+}
+
+func strokeCreate(s *melody.Session, msg []byte) {
+	broadcastToOther(s, msg)
+
+}
+
+func strokesDelete(s *melody.Session, msg []byte) {
+	broadcastToOther(s, msg)
+
+}
+
+func strokesClear(s *melody.Session, requestBody map[string]interface{}) {
+
+}
+
+func changePageIndex(s *melody.Session, requestBody map[string]interface{}) {
+
+	boardId := requestBody["boardId"].(string)
+	pageId := requestBody["pageId"].(int)
+
+	s.Keys = g.MapStrAny{"boardID": boardId, "pageNumber": pageId}
+	//s.Keys["boardID"] = boardId
+	//s.Keys["pageNumber"] = pageId
+
+	// todo 返回当前页的所有笔迹
 
 }
 
@@ -38,20 +65,4 @@ func broadcastToOther(s *melody.Session, msg []byte) {
 	if err != nil {
 		g.Log().Line().Debug(err)
 	}
-}
-
-func strokeCreate(s *melody.Session, msg []byte) {
-
-}
-
-func strokesDelete(s *melody.Session, msg []byte) {
-
-}
-
-func strokesClear(s *melody.Session, requestBody map[string]interface{}) {
-
-}
-
-func changePageIndex(s *melody.Session, requestBody map[string]interface{}) {
-
 }

@@ -8,9 +8,8 @@ import (
 )
 
 // @title       share_board_backend API
-// @version     1.0.3
+// @version     1.0.4
 // @description `share_board_backend` 117503445 的 共享白板 api
-// @schemes     http
 
 // @contact.name 117503445
 // @contact.url http://www.117503445.top

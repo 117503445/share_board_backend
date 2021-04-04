@@ -8,7 +8,7 @@ import (
 )
 
 // @title       share_board_backend API
-// @version     1.0.0
+// @version     1.0.1
 // @description `share_board_backend` 117503445 的 共享白板 api
 // @schemes     http
 

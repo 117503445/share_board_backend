@@ -57,10 +57,12 @@ func strokesDelete(s *melody.Session, msg []byte) {
 	pageKey := fmt.Sprintf("%v-%v", s.Keys["boardID"], s.Keys["pageNumber"])
 
 	j, _ := gjson.DecodeToJson(msg)
-	deleteIdArray := j.GetArray("id")
-
-	if _, err := g.Redis().Do("HDEL", pageKey, deleteIdArray); err != nil {
-		g.Log().Line().Debug(err)
+	deleteIdArray := j.GetFloats("id")
+	//g.Log().Line().Debug(pageKey)
+	//g.Log().Line().Debug(deleteIdArray)
+	for _, deleteId := range deleteIdArray {
+		g.Log().Line().Debug(deleteId)
+		_, _ = g.Redis().Do("HDEL", pageKey, deleteId)
 	}
 
 }

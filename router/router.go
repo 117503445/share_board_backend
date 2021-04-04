@@ -16,7 +16,6 @@ func init() {
 		group.Group("/api", func(group *ghttp.RouterGroup) {
 
 			group.GET("/ws", func(r *ghttp.Request) {
-				g.Log().Line().Debug("LOG /api/ws")
 				if err := websocket.M.HandleRequest(r.Response.Writer, r.Request); err != nil {
 					g.Log().Line().Debug(err)
 				}

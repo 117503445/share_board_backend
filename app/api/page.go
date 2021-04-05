@@ -25,7 +25,7 @@ func PageOnMessage(s *melody.Session, msg []byte) {
 	case "strokes-delete":
 		strokesDelete(s, msg)
 	case "strokes-clear":
-		strokesClear(s, requestBody)
+		strokesClear(s, msg)
 	case "change-page-index":
 		changePageIndex(s, requestBody)
 	}
@@ -61,14 +61,20 @@ func strokesDelete(s *melody.Session, msg []byte) {
 	//g.Log().Line().Debug(pageKey)
 	//g.Log().Line().Debug(deleteIdArray)
 	for _, deleteId := range deleteIdArray {
-		g.Log().Line().Debug(deleteId)
+		//g.Log().Line().Debug(deleteId)
 		_, _ = g.Redis().Do("HDEL", pageKey, deleteId)
 	}
 
 }
 
-func strokesClear(s *melody.Session, requestBody map[string]interface{}) {
+func strokesClear(s *melody.Session, msg []byte) {
+	broadcastToOther(s, msg)
 
+	pageKey := fmt.Sprintf("%v-%v", s.Keys["boardID"], s.Keys["pageNumber"])
+	_, err := g.Redis().Do("DEL", pageKey)
+	if err != nil {
+		g.Log().Line().Debug(err)
+	}
 }
 
 func changePageIndex(s *melody.Session, requestBody map[string]interface{}) {

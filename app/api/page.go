@@ -6,6 +6,7 @@ import (
 	"github.com/gogf/gf/encoding/gjson"
 	"github.com/gogf/gf/frame/g"
 	"gopkg.in/olahol/melody.v1"
+	"reflect"
 	"share_board_backend/library/websocket"
 	"strings"
 )
@@ -107,7 +108,7 @@ func changePageIndex(s *melody.Session, requestBody map[string]interface{}) {
 //broadcastToOther 转发消息给其他的 Page
 func broadcastToOther(s *melody.Session, msg []byte) {
 	err := websocket.M.BroadcastFilter(msg, func(q *melody.Session) bool {
-		return q != s
+		return q != s && reflect.DeepEqual(q.Keys, s.Keys)
 	})
 
 	if err != nil {
